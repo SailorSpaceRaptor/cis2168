@@ -99,25 +99,38 @@ public void omit(int i)
         howMany --; 
         if (p.right == null && p.left == null) //case 1 leaf node
         {
-            p.info = prev.info; //p.info = prev.info
+          if (p.info < prev.info)
+              prev.left = null;
+          else
+              prev.right = null;
         }
-        else if (p.right != null ^ p.left != null) //case 2 node with only one subtree
+  
+      else if (p.right != null ^ p.left != null) //case 2 node with only one subtree
         {
-            if (p.right != null) 
-            { p.right = prev.right;}
-            else
-            { p.left = prev.left;}
-            
-         p.info = prev.info;   
-            
+          if(p.info < prev.info)
+          {
+              prev.left = p.right;
+          }   
+          else
+          {
+             prev.right = p.left;
+          }
         }
-        else //third case, root node
+       
+      else //third case, root node
         {   
-            btNode old = p; //remove largest node from left subtree
-            p.info = traverse(p.left);
-            p.left = old.left;
-            p.right = old.right;
-            
+           btNode old = p; //saves old node to be overwritten
+ 
+           prev = p;
+  
+           while(p.left != null) //searches tree to find the new root
+           {
+               prev = p;
+               p = p.left;
+           }
+           old.info = p.info;
+           prev.right = p.right;
+           prev.left = p.left;
         }
     }
 }
@@ -125,11 +138,19 @@ public void omit(int i)
 //this method prints the members of the tree in descending order
 public void print()
 {
-  
    printTree(c);
-   
 }
 
+//This method copies one object into another
+public void copy(intColl6 obj)
+{   
+    if (obj != this)
+    {
+    c = copyTree(obj.c);
+    howMany = obj.get_howMany(); 
+    }
+    
+}
 
 //this method traverses the binary tree and returns a true if the number in question is in the collection
 public boolean belongs(int i)
@@ -147,6 +168,28 @@ public boolean belongs(int i)
 }
 
 //this method tests equality between two binary trees and returns a boolean true if equal
+public boolean equals(intColl6 obj)
+{
+    boolean isEqual = true;
+
+     int[] d = new int [howMany];
+     int[] b = new int [howMany];
+     int point_1, point_2;
+     
+    if (this.howMany == obj.howMany)//check to see if each has the same number of objects
+    { 
+        d = new int[this.howMany];//create two arrays from lists
+        b = new int[obj.howMany];
+        point_1 = toArray(obj.c, b, 0);
+        point_2 = toArray(c, d,0);
+    }  
+
+for(int i = 0; (i < d.length && i < b.length); i++)//compare objects in array
+      isEqual = (b[i] == d[i]);
+
+return isEqual;
+ 
+}
 
 
 //private method uses an inorder traverse to print the members of the binary tree, is then called by the print method
@@ -161,51 +204,37 @@ private static void printTree(btNode t)
 }
 
 //this method uses a post order traverse to copy a tree to be used in other methods
- /*  public static btNode copytree(btNode t) 
+   private static btNode copyTree(btNode t) 
    { 
-      btNode root=null;
-      if (t!=null)
+      btNode rt = null;
+      btNode L = null;
+      btNode R = null;
+      
+      if( t != null)
       {
-         root=new btNode();
-         root.setinfo(t.getinfo()); 
-         root.setleft(copytree(t.getleft()));
-         root.setright(copytree(t.getright()));
+        L = copyTree(t.left);
+        R = copyTree(t.right);
+        rt = new btNode(t.info,L,R);
       }
-      return root;
+      return rt;
+      
    }
-*/
+
 
 //this method uses an inorder traverse to put a binary tree into an array for use in comparisons (i.e equals())
-   public static int toarray(btNode t, int[] a, int i)
+   public static int toArray(btNode t, int[] a, int i)
    {
       int num_nodes=0;
       if (t!=null)
       {
-         num_nodes=toarray(t.left, a, i);
+         num_nodes=toArray(t.left, a, i);
          a[num_nodes+i]=t.info;   
-         num_nodes=num_nodes+1+toarray(t.right, a, num_nodes+i+1);
+         num_nodes=num_nodes+1+toArray(t.right, a, num_nodes+i+1);
       }
       return num_nodes;
    } 
 
-   //a method to be used with omit, it traverses the left subtree and returns its largest value
-   private int traverse(btNode t)
-   {
-       int large = 0;
-       while(t.left != null) //preorder traverse through left subtree
-       {
-        large = t.info;
-        int i = traverse(t.left);
-        int j = traverse(t.right);
-        
-        if(i > j)
-            i = large;
-        else
-            j = large;
-       }
-        return large;
-   }
-   
+
 //this method tells us how many objects are in the list
    public int get_howMany()
    {
