@@ -119,20 +119,38 @@ public void omit(int i)
        
       else //third case, root node
         {   
-           btNode old = p; //saves old node to be overwritten
- 
-           prev = p;
-  
-           while(p.left != null) //searches tree to find the new root
+              btNode old = p; //saves old node to be overwritten
+           btNode oldPrev = prev;
+           //prev = p;
+          
+            p = p.left;
+           while(p.right != null) //searches tree to find the new root
            {
                prev = p;
-               p = p.left;
+               p = p.right; //largest member of left subtree will come out of this loop
            }
-           old.info = p.info;
-           prev.right = p.right;
-           prev.left = p.left;
-        }
+          
+            
+             old.left = prev.left;
+             p.right = old.right;
+             p.left = old.left;
+             
+           
+            if(oldPrev != null)
+            {
+                if( p.info < oldPrev.info ){
+                        oldPrev.left = p;
+                    } else {
+                        oldPrev.right = p;
+                    }
+            }
+         else
+            {
+                c = p;
+            }
+        
     }
+  }
 }
 
 //this method prints the members of the tree in descending order

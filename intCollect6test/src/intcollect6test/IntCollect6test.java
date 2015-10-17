@@ -20,13 +20,14 @@ public class IntCollect6test
         intColl6 c = new intColl6();
         intColl6 d = new intColl6();
         
-        c.insert(75);
-        c.insert(50);
-        c.insert(23);
-        c.insert(200);
-        c.insert(37);
-        c.insert(30);
-        c.insert(42);
+        c.insert(100);
+        c.insert(250);
+        c.insert(225);
+        c.insert(300);
+        c.insert(43);
+        c.insert(25);
+        c.insert(22);
+        c.insert(46);
         
         c.print();
         
@@ -35,9 +36,11 @@ public class IntCollect6test
         System.out.println("Let's see how many objects are in this list");
         System.out.println(howMany);
         
-        System.out.println("We will now omit");
-        c.omit(75);
+        System.out.println("We will now omit root node 75");
+        //c.omit(43);
         
+        //c.print();
+        c.omit(100);
         c.print();
         
         int howMany2 = c.get_howMany();
