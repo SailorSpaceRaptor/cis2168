@@ -37,9 +37,9 @@ public class IntCollect6test
         System.out.println(howMany);
         
         System.out.println("We will now omit root node 75");
-        //c.omit(43);
+        c.omit(43);
         
-        //c.print();
+        c.print();
         c.omit(100);
         c.print();
         
@@ -52,7 +52,7 @@ public class IntCollect6test
     d.print();
     
     System.out.println("Now we will test to see if 42 belongs in the list");
-    if(c.belongs(42))
+    if(c.belongs(22))
         System.out.println("42 totally belongs in the list");
     else
         System.out.println("FAILURE!");
